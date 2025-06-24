@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SCGPA to CGPA Converter</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>SCGPA to CGPA Converter</h1>
+        <form id="cgpaForm">
+            <label>Enter SCGPA values (minimum 2):</label><br><br>
+            <input type="number" step="0.01" placeholder="Semester 1" class="scgpa"><br>
+            <input type="number" step="0.01" placeholder="Semester 2" class="scgpa"><br>
+            <input type="number" step="0.01" placeholder="Semester 3" class="scgpa"><br>
+            <input type="number" step="0.01" placeholder="Semester 4" class="scgpa"><br>
+            <input type="number" step="0.01" placeholder="Semester 5" class="scgpa"><br>
+            <input type="number" step="0.01" placeholder="Semester 6" class="scgpa"><br>
+            <input type="number" step="0.01" placeholder="Semester 7" class="scgpa"><br>
+            <input type="number" step="0.01" placeholder="Semester 8" class="scgpa"><br><br>
+            <button type="button" onclick="calculateCGPA()">Calculate CGPA</button>
+        </form>
+        <h2 id="result">Your CGPA: --</h2>
+    </div>
+
+    <script>
+        function calculateCGPA() {
+            const inputs = document.querySelectorAll('.scgpa');
+            let total = 0;
+            let count = 0;
+
+            inputs.forEach(input => {
+                const val = parseFloat(input.value);
+                if (!isNaN(val)) {
+                    total += val;
+                    count++;
+                }
+            });
+
+            if (count < 2) {
+                alert("Please enter at least 2 SCGPA values.");
+                return;
+            }
+
+            const cgpa = total / count;
+            document.getElementById('result').innerText = "Your CGPA: " + cgpa.toFixed(2);
+        }
+    </script>
+</body>
+</html>
