@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SGPA to CGPA Converter</title>
+  <title>SCGPA to CGPA Converter</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <h1>SCGPA to CGPA Converter</h1>
+    <h1>SGPA to CGPA Converter</h1>
 
     <div id="inputs">
-      <input type="number" step="0.01" placeholder="Semester 1" class="scgpa"><br>
+      <input type="number" step="0.01" max="10" min="0" placeholder="Semester 1" class="scgpa"><br>
     </div>
 
     <button onclick="addSemester()">➕ Add Semester</button>
@@ -29,11 +29,14 @@
         alert("Maximum 8 semesters allowed!");
         return;
       }
+
       semesterCount++;
       const inputDiv = document.getElementById("inputs");
       const newInput = document.createElement("input");
       newInput.type = "number";
       newInput.step = "0.01";
+      newInput.max = "10";
+      newInput.min = "0";
       newInput.placeholder = `Semester ${semesterCount}`;
       newInput.className = "scgpa";
       inputDiv.appendChild(newInput);
@@ -45,13 +48,17 @@
       let total = 0;
       let count = 0;
 
-      inputs.forEach(input => {
+      for (let input of inputs) {
         const val = parseFloat(input.value);
         if (!isNaN(val)) {
+          if (val > 10 || val < 0) {
+            alert("Please enter valid SCGPA values between 0 and 10.");
+            return;
+          }
           total += val;
           count++;
         }
-      });
+      }
 
       if (count < 1) {
         alert("Please enter at least 1 SCGPA value.");
@@ -65,7 +72,7 @@
     function resetForm() {
       const inputDiv = document.getElementById("inputs");
       inputDiv.innerHTML = `
-        <input type="number" step="0.01" placeholder="Semester 1" class="scgpa"><br>
+        <input type="number" step="0.01" max="10" min="0" placeholder="Semester 1" class="scgpa"><br>
       `;
       semesterCount = 1;
       document.getElementById('result').innerText = "Your CGPA: --";
