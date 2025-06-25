@@ -8,22 +8,34 @@
 <body>
     <div class="container">
         <h1>SCGPA to CGPA Converter</h1>
-        <form id="cgpaForm">
-            <label>Enter SCGPA values (minimum 2):</label><br><br>
+
+        <div id="inputs">
+            <!-- Start with only 1 semester input -->
             <input type="number" step="0.01" placeholder="Semester 1" class="scgpa"><br>
-            <input type="number" step="0.01" placeholder="Semester 2" class="scgpa"><br>
-            <input type="number" step="0.01" placeholder="Semester 3" class="scgpa"><br>
-            <input type="number" step="0.01" placeholder="Semester 4" class="scgpa"><br>
-            <input type="number" step="0.01" placeholder="Semester 5" class="scgpa"><br>
-            <input type="number" step="0.01" placeholder="Semester 6" class="scgpa"><br>
-            <input type="number" step="0.01" placeholder="Semester 7" class="scgpa"><br>
-            <input type="number" step="0.01" placeholder="Semester 8" class="scgpa"><br><br>
-            <button type="button" onclick="calculateCGPA()">Calculate CGPA</button>
-        </form>
+        </div>
+
+        <button onclick="addSemester()">➕ Add Semester</button>
+        <button onclick="calculateCGPA()">✅ Calculate CGPA</button>
+        <button onclick="resetForm()">🔁 Reset</button>
+
         <h2 id="result">Your CGPA: --</h2>
     </div>
 
     <script>
+        let semesterCount = 1;
+
+        function addSemester() {
+            semesterCount++;
+            const inputDiv = document.getElementById("inputs");
+            const newInput = document.createElement("input");
+            newInput.type = "number";
+            newInput.step = "0.01";
+            newInput.placeholder = `Semester ${semesterCount}`;
+            newInput.className = "scgpa";
+            inputDiv.appendChild(newInput);
+            inputDiv.appendChild(document.createElement("br"));
+        }
+
         function calculateCGPA() {
             const inputs = document.querySelectorAll('.scgpa');
             let total = 0;
@@ -37,13 +49,22 @@
                 }
             });
 
-            if (count < 2) {
-                alert("Please enter at least 2 SCGPA values.");
+            if (count < 1) {
+                alert("Please enter at least 1 SCGPA value.");
                 return;
             }
 
             const cgpa = total / count;
             document.getElementById('result').innerText = "Your CGPA: " + cgpa.toFixed(2);
+        }
+
+        function resetForm() {
+            const inputDiv = document.getElementById("inputs");
+            inputDiv.innerHTML = `
+                <input type="number" step="0.01" placeholder="Semester 1" class="scgpa"><br>
+            `;
+            semesterCount = 1;
+            document.getElementById('result').innerText = "Your CGPA: --";
         }
     </script>
 </body>
