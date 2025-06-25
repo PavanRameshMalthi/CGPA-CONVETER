@@ -1,71 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>SCGPA to CGPA Converter</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SCGPA to CGPA Converter</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <div class="container">
-        <h1>SGPA to CGPA Converter</h1>
+  <div class="container">
+    <h1>SCGPA to CGPA Converter</h1>
 
-        <div id="inputs">
-            <!-- Start with only 1 semester input -->
-            <input type="number" step="0.01" placeholder="Semester 1" class="scgpa"><br>
-        </div>
-
-        <button onclick="addSemester()">➕ Add Semester</button>
-        <button onclick="calculateCGPA()">✅ Calculate CGPA</button>
-        <button onclick="resetForm()">🔁 Reset</button>
-
-        <h2 id="result">Your CGPA: --</h2>
+    <div id="inputs">
+      <input type="number" step="0.01" placeholder="Semester 1" class="scgpa"><br>
     </div>
 
-    <script>
-        let semesterCount = 1;
+    <button onclick="addSemester()">➕ Add Semester</button>
+    <button onclick="calculateCGPA()">✅ Calculate CGPA</button>
+    <button onclick="resetForm()">🔁 Reset</button>
 
-        function addSemester() {
-            semesterCount++;
-            const inputDiv = document.getElementById("inputs");
-            const newInput = document.createElement("input");
-            newInput.type = "number";
-            newInput.step = "0.01";
-            newInput.placeholder = `Semester ${semesterCount}`;
-            newInput.className = "scgpa";
-            inputDiv.appendChild(newInput);
-            inputDiv.appendChild(document.createElement("br"));
+    <h2 id="result">Your CGPA: --</h2>
+  </div>
+
+  <script>
+    let semesterCount = 1;
+
+    function addSemester() {
+      if (semesterCount >= 8) {
+        alert("Maximum 8 semesters allowed!");
+        return;
+      }
+      semesterCount++;
+      const inputDiv = document.getElementById("inputs");
+      const newInput = document.createElement("input");
+      newInput.type = "number";
+      newInput.step = "0.01";
+      newInput.placeholder = `Semester ${semesterCount}`;
+      newInput.className = "scgpa";
+      inputDiv.appendChild(newInput);
+      inputDiv.appendChild(document.createElement("br"));
+    }
+
+    function calculateCGPA() {
+      const inputs = document.querySelectorAll('.scgpa');
+      let total = 0;
+      let count = 0;
+
+      inputs.forEach(input => {
+        const val = parseFloat(input.value);
+        if (!isNaN(val)) {
+          total += val;
+          count++;
         }
+      });
 
-        function calculateCGPA() {
-            const inputs = document.querySelectorAll('.scgpa');
-            let total = 0;
-            let count = 0;
+      if (count < 1) {
+        alert("Please enter at least 1 SCGPA value.");
+        return;
+      }
 
-            inputs.forEach(input => {
-                const val = parseFloat(input.value);
-                if (!isNaN(val)) {
-                    total += val;
-                    count++;
-                }
-            });
+      const cgpa = total / count;
+      document.getElementById('result').innerText = "Your CGPA: " + cgpa.toFixed(2);
+    }
 
-            if (count < 1) {
-                alert("Please enter at least 1 SCGPA value.");
-                return;
-            }
-
-            const cgpa = total / count;
-            document.getElementById('result').innerText = "Your CGPA: " + cgpa.toFixed(2);
-        }
-
-        function resetForm() {
-            const inputDiv = document.getElementById("inputs");
-            inputDiv.innerHTML = `
-                <input type="number" step="0.01" placeholder="Semester 1" class="scgpa"><br>
-            `;
-            semesterCount = 1;
-            document.getElementById('result').innerText = "Your CGPA: --";
-        }
-    </script>
+    function resetForm() {
+      const inputDiv = document.getElementById("inputs");
+      inputDiv.innerHTML = `
+        <input type="number" step="0.01" placeholder="Semester 1" class="scgpa"><br>
+      `;
+      semesterCount = 1;
+      document.getElementById('result').innerText = "Your CGPA: --";
+    }
+  </script>
 </body>
 </html>
